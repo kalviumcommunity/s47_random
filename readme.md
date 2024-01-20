@@ -10,6 +10,7 @@ Brushing teeth too soon after eating or drinking can soften the tooth enamel, es
 Breathing deeply in moments of stress, or anytime during the day, brings many benefits such as better circulation, decreased anxiety and reduced 
 blood pressure1.
 
+<---jnshdf--->
 On average, there are more bacteria per square inch in a kitchen sink than the bathroom1.
 
 39% of adults in the world are overweight1.
