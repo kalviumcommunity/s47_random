@@ -37,4 +37,3 @@ During an allergic reaction your immune system is responding to a false alarm th
 
 Maintaining good relationships with your friends and family, reduces harmful levels of stress and boosts your immune system1.
 
-kk
