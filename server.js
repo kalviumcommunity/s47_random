@@ -6,6 +6,7 @@ app.get ('/ping', (request, resolve)=>{
     //showing message as json
 
     resolve.json({
+    description: 'ping',
     message: 'pong',
     date: new Date()});
 });
@@ -17,3 +18,4 @@ if (require.main === module) {
 }
 
 module.exports = app;
+
