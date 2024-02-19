@@ -21,6 +21,7 @@ mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: 
     try {
       const users = await User.find().exec();
       res.json(users);
+      res.send('connected');
     } catch (error) {
       console.error('Error retrieving user data:', error);
     }
