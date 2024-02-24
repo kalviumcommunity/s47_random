@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const port = 8000 ;
+const port = 3000 ;
 const userSchema = new mongoose.Schema({
   username: String,
   email: String,
@@ -16,7 +16,7 @@ mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: 
   })
   .catch((err) => {
     console.error('Error connecting to MongoDB:', err);
-    
+
   });
   app.get('/', async (req, res) => {
     try {

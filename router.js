@@ -24,11 +24,11 @@ app.post('/todos', (req, res) => {
         completed: req.body.completed || false
     };
     todos.push(newTodo);
-    res.status(201).json(newTodo);
+    res.json(newTodo);
 });
 
 app.put('/todos/:id', (req, res) => {
-    
+
     const id = parseInt(req.params.id);
     const update = req.body;
     const todoToUpdate = todos.find(todo => todo.id === id);
@@ -37,7 +37,7 @@ app.put('/todos/:id', (req, res) => {
         todoToUpdate.completed = update.completed || todoToUpdate.completed;
         res.json(todoToUpdate);
     } else {
-        res.status(404).json({ error: "Todo not found" });
+        res.json({ error: "Todo not found" });
     }
 });
 
@@ -51,6 +51,6 @@ if (require.main === module) {
     app.listen(port, () => {
         console.log(`Server running on port ${port}`);
     });
-}
+
 
 module.exports
