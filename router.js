@@ -9,10 +9,12 @@ let todos = [
     { id: 1, todo: "Learn JavaScript", completed: false },
     { id: 2, todo: "Build a CRUD app", completed: false },
     { id: 3, todo: "Deploy the app", completed: false }
+
 ];
 
 app.get("/todos", (req, res) => {
     res.json(todos);
+
 });
 
 app.post('/todos', (req, res) => {
@@ -26,6 +28,7 @@ app.post('/todos', (req, res) => {
 });
 
 app.put('/todos/:id', (req, res) => {
+    
     const id = parseInt(req.params.id);
     const update = req.body;
     const todoToUpdate = todos.find(todo => todo.id === id);

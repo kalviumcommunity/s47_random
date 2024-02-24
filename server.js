@@ -16,6 +16,7 @@ mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: 
   })
   .catch((err) => {
     console.error('Error connecting to MongoDB:', err);
+    
   });
   app.get('/', async (req, res) => {
     try {
