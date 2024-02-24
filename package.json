@@ -2,9 +2,11 @@
   "name": "package.json",
   "version": "1.0.0",
   "description": "This is a simple website that generates a random number \r for user to get a random health based fact The random number must not be multiple by 13 else You win the lucky competition\r and will show a winning or lossing message.user don't need to do anything",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+    , "start": "nodemon router.js"
+    
   },
   "author": "gv",
   "license": "ISC",
@@ -13,6 +15,6 @@
     "mongoose": "^8.1.1"
   },
   "devDependencies": {
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.1.0"
   }
 }
