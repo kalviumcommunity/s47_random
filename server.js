@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const port = 3000 ;
+const port = 8000 ;
 const userSchema = new mongoose.Schema({
   username: String,
   email: String,
