@@ -7,6 +7,7 @@ import Books from './Books.jsx';
 import data from './data.json'; // Import your JSON data here
 import Users from './Users.jsx';
 import Forms from './Forms.jsx';
+import EditForm from './EditForm.jsx';
 
 
 function Home() {
@@ -86,6 +87,7 @@ function App() {
           <Route path="/books" element={<Books books={data.MyFavBooks} />} />
           <Route path='/users' element={<Users />} />
           <Route path='/add-user' element={<Forms />} />
+          <Route path='/users/edit' element={<EditForm />} />
         </Routes>
 
         <button onClick={toggleDarkMode}>Dark/light</button>
