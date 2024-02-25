@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const Joi = require('joi');
 const app = express();
 const mongoose = require('mongoose');
 const port = 2000;
@@ -32,11 +33,27 @@ app.get('/', async (req, res) => {
 });
 
 app.post('/add', async (req, res) => {
-  try {
-    const newUser = await User.create(req.body);
-    res.status(201).json(newUser);
-  } catch (error) {
-    console.error('Error', error);
+  const schema = Joi.object({
+    username: Joi.string().min(3).max(30).required().label('Userame'),
+    email: Joi.string().email().required().label('Email'),
+  }).options({abortEarly: false});
+
+  const userData = req.body; // Get user data from the request body
+  console.log('request body:  ',userData)
+  const { error, value } = schema.validate(userData);
+  if (error) {
+    console.log(error)
+    res.status(400).json({ error });
+  }
+  else {
+    try {
+      console.log("validated value:  ",value)
+      const createdUser = await User.create(value); // Create a new user
+      console.log('user created:  ',createdUser)
+      res.status(201).json(createdUser); // Respond with the created user
+    } catch (error) {
+      res.status(500).json({ message: 'Error creating user', error: error.message }); // Respond with an error message
+    }
   }
 });
 
