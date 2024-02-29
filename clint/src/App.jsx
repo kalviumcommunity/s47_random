@@ -1,22 +1,17 @@
-import { useState } from 'react';
+
+
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
+import Books from './Books.jsx'; 
+import data from './data.json'; // Import your JSON data here
 
-function App() {
-  const [count, setCount] = useState(0);
-  const [isDarkMode, setDarkMode] = useState(false);
-
-  const toggleDarkMode = () => {
-    console.log('Toggle Dark Mode');
-    setDarkMode((prevMode) => !prevMode);
-  };
-  
-
+function Home() {
   return (
-    <>
-      <div className={isDarkMode ? 'dark-mode' : 'light-mode'}>
-        <h3>M9_E1,2,3_Gv
-        <p className='g'># 📅 Here are some random health facts: 🤧</p>
-        <p></p>
+    <div>
+      <h3>M9_E1,2,3_Gv</h3>
+      <p className='g'># 📅 Here are some random health facts: 🤧</p>
+      <p></p>
 
         <p>Drinking at least five glasses of water a day can reduce your chances of suffering from a heart attack by 40%1.</p>
 
@@ -52,12 +47,40 @@ function App() {
 
         <p>Maintaining good relationships with your friends and family, reduces harmful levels of stress and boosts your immune system1.</p>
 
-        </h3>
+      </div>
+  );
+}
+
+function App() {
+  const [isDarkMode, setDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    setDarkMode(prevMode => !prevMode);
+  };
+
+  return (
+    <Router>
+      <div className={isDarkMode ? 'dark-mode' : 'light-mode'}>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/books">Books</Link>
+            </li>
+          </ul>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/books" element={<Books books={data.MyFavBooks} />} />
+        </Routes>
+
         <button onClick={toggleDarkMode}>Dark/light</button>
       </div>
-    </>
+    </Router>
   );
 }
 
 export default App;
-
