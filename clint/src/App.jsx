@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
 import Books from './Books.jsx'; 
 import data from './data.json'; // Import your JSON data here
+import Users from './Users.jsx';
 
 function Home() {
   return (
@@ -69,12 +70,16 @@ function App() {
             <li>
               <Link to="/books">Books</Link>
             </li>
+            <li>
+              <Link to='/users'>Users</Link>
+            </li>
           </ul>
         </nav>
 
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/books" element={<Books books={data.MyFavBooks} />} />
+          <Route path='/users' element={<Users />} />
         </Routes>
 
         <button onClick={toggleDarkMode}>Dark/light</button>

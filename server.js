@@ -1,7 +1,10 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const mongoose = require('mongoose');
-const port = 3000 ;
+const port = 2000 ;
+app.use(express.json());
+app.use(cors())
 const userSchema = new mongoose.Schema({
   username: String,
   email: String,
@@ -10,7 +13,7 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 const connectionString = 'mongodb+srv://goru-2004:goru-2004@cluster.0cv8pyz.mongodb.net/?retryWrites=true&w=majority';
 
-mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(connectionString)
   .then(() => {
     console.log('Connected to MongoDB');
   })
@@ -22,18 +25,11 @@ mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: 
     try {
       const users = await User.find().exec();
       res.json(users);
-      res.send('connected');
     } catch (error) {
       console.error('Error retrieving user data:', error);
     }
   });
 
-
-if (require.main === module) {
   app.listen(port, () => {
     console.log(`server running on PORT: ${port}`);
   });
-}
-
-module.exports = app;
-
