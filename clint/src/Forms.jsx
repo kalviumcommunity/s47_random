@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './Form.css';
 
 const Forms = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +22,6 @@ const Forms = () => {
     e.preventDefault();
     try {
       await axios.post('http://localhost:2000/add', formData);
-      // Reset form fields after successful submission
       setFormData({
         username: '',
         email: '',
@@ -35,30 +35,36 @@ const Forms = () => {
   };
 
   return (
+    <div className="form-container">
     <form onSubmit={handleSubmit}>
-      <label>
-        Username:
+      <div className="form-group">
+        <label className="form-label">Username:</label>
         <input
+          className="form-input"
           type="text"
           name="username"
           value={formData.username}
           onChange={handleChange}
           required
         />
-      </label>
-      <label>
-        Email:
+      </div>
+      <div className="form-group">
+        <label className="form-label">Email:</label>
         <input
+          className="form-input"
           type="email"
           name="email"
           value={formData.email}
           onChange={handleChange}
           required
         />
-      </label>
-      <button type="submit">Add User</button>
+      </div>
+      <button className="form-button" type="submit">
+        Add User
+      </button>
     </form>
-  );
+  </div>
+);
 };
 
 export default Forms;

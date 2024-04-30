@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
+import './EditForm.css';
 
 function EditForm() {
   const [editedUser, setEditedUser] = useState({
@@ -40,11 +41,11 @@ function EditForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" name="username" value={editedUser.username} onChange={handleChange} />
-      <input type="email" name="email" value={editedUser.email} onChange={handleChange} />
-      <button type="submit">Save</button>
-    </form>
+<form onSubmit={handleSubmit} className="form">
+  <input type="text" name="username" value={editedUser.username} onChange={handleChange} />
+  <input type="email" name="email" value={editedUser.email} onChange={handleChange} />
+  <button type="submit">Save</button>
+</form>
   );
 }
 
