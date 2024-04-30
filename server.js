@@ -2,9 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const mongoose = require('mongoose');
-const port = 2000 ;
+const port = 2000;
 app.use(express.json());
-app.use(cors())
+app.use(cors());
+
 const userSchema = new mongoose.Schema({
   username: String,
   email: String,
@@ -19,17 +20,28 @@ mongoose.connect(connectionString)
   })
   .catch((err) => {
     console.error('Error connecting to MongoDB:', err);
-
-  });
-  app.get('/', async (req, res) => {
-    try {
-      const users = await User.find().exec();
-      res.json(users);
-    } catch (error) {
-      console.error('Error retrieving user data:', error);
-    }
   });
 
-  app.listen(port, () => {
-    console.log(`server running on PORT: ${port}`);
-  });
+app.get('/', async (req, res) => {
+  try {
+    const users = await User.find().exec();
+    res.json(users);
+  } catch (error) {
+    console.error('Error retrieving user data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/add', async (req, res) => {
+  try {
+    const newUser = await User.create(req.body);
+    res.status(201).json(newUser);
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server running on PORT: ${port}`);
+});

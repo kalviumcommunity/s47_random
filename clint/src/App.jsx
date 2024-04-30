@@ -6,6 +6,8 @@ import './App.css';
 import Books from './Books.jsx'; 
 import data from './data.json'; // Import your JSON data here
 import Users from './Users.jsx';
+import Forms from './Forms.jsx';
+
 
 function Home() {
   return (
@@ -73,6 +75,9 @@ function App() {
             <li>
               <Link to='/users'>Users</Link>
             </li>
+            <li>
+              <Link to='/add-user'>Add User</Link>
+            </li>
           </ul>
         </nav>
 
@@ -80,6 +85,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/books" element={<Books books={data.MyFavBooks} />} />
           <Route path='/users' element={<Users />} />
+          <Route path='/add-user' element={<Forms />} />
         </Routes>
 
         <button onClick={toggleDarkMode}>Dark/light</button>
