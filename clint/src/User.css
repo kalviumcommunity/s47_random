@@ -32,7 +32,9 @@ nav ul li a {
 .container {
   padding: 20px;
   width: 96vw;
-  margin-top: 18vh;
+  margin-top: 200vh;
+  display: flex;
+  flex-direction: column;
   text-align: center;
   justify-content: center;
   align-items: center;
