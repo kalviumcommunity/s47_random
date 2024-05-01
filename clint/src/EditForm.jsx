@@ -1,5 +1,3 @@
-// EditForm.jsx
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -13,7 +11,6 @@ function EditForm() {
   const location = useLocation();
 
   useEffect(() => {
-    // Extract user data from location state
     const user = location.state?.user;
     if (user) {
       setEditedUser(user);
