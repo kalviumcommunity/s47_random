@@ -1,51 +1,83 @@
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "./EditForm.css";
+import Cookies from 'js-cookie';
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
-import './EditForm.css';
 
-function EditForm() {
-  const [editedUser, setEditedUser] = useState({
-    username: '',
-    email: '',
-  });
+const EditForm = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
-  useEffect(() => {
-    // Extract user data from location state
-    const user = location.state?.user;
-    if (user) {
-      setEditedUser(user);
-    }
-  }, [location.state]);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+  });
+
+  const token = Cookies.get('admin');
+  // console.log(token);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditedUser(prevState => ({
-      ...prevState,
+    setFormData((prevData) => ({
+      ...prevData,
       [name]: value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      await axios.put(`http://localhost:2000/users/${editedUser._id}`, editedUser);
-      // Navigate to users list after update
-      navigate('/users');
+      const response = await axios.post("http://localhost:3000/users", formData,{
+        headers: {
+          'Authorization': `Bearer ${token}`
+      }
+      });
+      const receivedData = response.data;
+      console.log("Server response:", receivedData);
+
+      // Redirect to "/users" with a success message
+      navigate("/users", { state: { successMessage: "User added successfully!" } });
     } catch (error) {
-      console.error('Error updating user:', error);
+      // console.error("Error posting data:", error.response.data);
+      const message = error.response.data.error.details;
+      // console.log(message)
+      message.map((value)=>{
+        alert(value.message)
+      })
     }
   };
 
   return (
-<form onSubmit={handleSubmit} className="form">
-  <input type="text" name="username" value={editedUser.username} onChange={handleChange} />
-  <input type="email" name="email" value={editedUser.email} onChange={handleChange} />
-  <button type="submit">Save</button>
-</form>
-  );
-}
+    <form className="user-form" onSubmit={handleSubmit}>
+      <label className="form-label">
+        Username:
+        <input
+          className="form-input"
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        />
+      </label>
 
+      <label className="form-label">
+        Email:
+        <input
+          className="form-input"
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+      </label>
+
+      <button className="form-button" type="submit">
+        Submit
+      </button>
+    </form>
+  );
+};
 export default EditForm;
