@@ -17,7 +17,7 @@ const connectionString = 'mongodb+srv://goru-2004:goru-2004@cluster.0cv8pyz.mong
 
 mongoose.connect(connectionString)
   .then(() => {
-    console.log('Connected to MongoDB');
+    console.log('We Are Connected to Goru MongoDB');
   })
   .catch((err) => {
     console.error('Error ', err);
@@ -76,6 +76,44 @@ app.delete('/users/:id', async (req, res) => {
     console.error('Error deleting user:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
+});
+//**********************login************************************ */
+
+app.post('/login', async (req, res) => {
+  const schema = Joi.object({
+    username: Joi.string().min(3).max(30).required().label('Username'),
+    email: Joi.string().email().required().label('Email'),
+  }).options({ abortEarly: false });
+
+  const userData = req.body;
+
+  const { error, value } = schema.validate(userData);
+
+  if (error) {
+    res.status(400).json({ message: 'Validation failed', errors: error.details });
+    return;
+  }
+
+  const { username, email} = value;
+
+  try {
+    const findUser = await User.findOne({ username, email });
+    if (!findUser) {
+      res.status(404).json({ message: 'user not found' });
+      return;
+    }
+    res.cookie('username', username);
+    res.status(200).json({message: 'user found and logged in'});
+  } catch (err) {
+    res.status(500).json({ message: 'Error', error: err.message });
+  }
+});
+
+//*****************************LOGOUT*******************************/
+
+app.get('/logout', (req, res) => {
+  res.clearCookie('username');
+  res.status(200).send({ message: 'Logged out successfully' });
 });
 
 app.listen(port, () => {

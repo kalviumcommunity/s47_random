@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import './User.css'
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -38,19 +39,19 @@ function Users() {
   };
 
   return (
-    <div>
-      <h1>Users</h1>
-      <ul>
-        {users.map(user => (
-          <li key={user._id}>
-            <h3>ID: {user._id}</h3>
-            <strong>Username:</strong> {user.username}, <strong>Email:</strong> {user.email}
-            <button onClick={() => handleEdit(user)}>Edit</button>
-            <button onClick={() => handleDelete(user._id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-    </div>
+<div className="container">
+  <h1 className='user' >Users</h1>
+  <ul>
+    {users.map(user => (
+      <li key={user._id}>
+        <h3>ID: {user._id}</h3>
+        <p><strong>Username:</strong> {user.username}, <strong>Email:</strong> {user.email}</p>
+        <button onClick={() => handleEdit(user)}>Edit</button>
+        <button onClick={() => handleDelete(user._id)}>Delete</button>
+      </li>
+    ))}
+  </ul>
+</div>
   );
 }
 

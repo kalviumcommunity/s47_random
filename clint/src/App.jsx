@@ -8,6 +8,7 @@ import data from './data.json'; // Import your JSON data here
 import Users from './Users.jsx';
 import Forms from './Forms.jsx';
 import EditForm from './EditForm.jsx';
+import Login from './Login.jsx';
 
 
 function Home() {
@@ -79,6 +80,9 @@ function App() {
             <li>
               <Link to='/add-user'>Add User</Link>
             </li>
+            <li>
+              <Link to='/login'>login</Link>
+            </li>
           </ul>
         </nav>
 
@@ -88,9 +92,11 @@ function App() {
           <Route path='/users' element={<Users />} />
           <Route path='/add-user' element={<Forms />} />
           <Route path='/users/edit' element={<EditForm />} />
+          <Route path='/login' element={<Login />} />
         </Routes>
 
         <button onClick={toggleDarkMode}>Dark/light</button>
+        <footer>...&copy;, ,  Made  by Gourasnh vavishnav</footer>
       </div>
     </Router>
   );
