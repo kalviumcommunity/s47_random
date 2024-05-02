@@ -1,83 +1,59 @@
-import { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import "./EditForm.css";
+import axios from 'axios';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import './EditForm.css'; // Import CSS file for styling
 import Cookies from 'js-cookie';
 
-
 const EditForm = () => {
-  const navigate = useNavigate();
+    const location = useLocation();
+    const user = location?.state?.user;
+    const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-  });
+    const [userName, setUserName] = useState(user?.name);
+    const [userEmail, setUserEmail] = useState(user?.email);
+    const token = Cookies.get('token');
+    console.log(token);
 
-  const token = Cookies.get('admin');
-  // console.log(token);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+    const updateuser = (event) => {
+        const name = event.target.name;
+        const value = event.target.value;
+        if (name === 'name') {
+            setUserName(value);
+        } else {
+            setUserEmail(value);
+        }
+        console.log(userName, userEmail);
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await axios.post("http://localhost:3000/users", formData,{
-        headers: {
-          'Authorization': `Bearer ${token}`
-      }
-      });
-      const receivedData = response.data;
-      console.log("Server response:", receivedData);
-
-      // Redirect to "/users" with a success message
-      navigate("/users", { state: { successMessage: "User added successfully!" } });
-    } catch (error) {
-      // console.error("Error posting data:", error.response.data);
-      const message = error.response.data.error.details;
-      // console.log(message)
-      message.map((value)=>{
-        alert(value.message)
-      })
+    function handleFormSubmit(event) {
+        event.preventDefault();
+        axios.put(`http://localhost:2000/users/${user._id}`, { name: userName, email: userEmail }, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => {
+                console.log(res.data)
+                navigate('/users')})
+            .catch(err => {
+                console.log(err)
+                alert(err.response?.data.message)
+            });
     }
-  };
 
-  return (
-    <form className="user-form" onSubmit={handleSubmit}>
-      <label className="form-label">
-        Username:
-        <input
-          className="form-input"
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-      </label>
+    return (
+        <div className="update-form-container">
+            <form className="update-form" onChange={updateuser} onSubmit={handleFormSubmit}>
+                <label htmlFor="username">Username:</label>
+                <input className="input-field" type="text" name='name' value={userName} autoFocus /><br /><br />
+                <label htmlFor="email">Email:</label>
+                <input className="input-field" type="text" name='email' value={userEmail} />
+                <br /><br />
+                <button className="submit-btn">Save</button>
+            </form>
+        </div>
+    )
+}
 
-      <label className="form-label">
-        Email:
-        <input
-          className="form-input"
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-      </label>
-
-      <button className="form-button" type="submit">
-        Submit
-      </button>
-    </form>
-  );
-};
 export default EditForm;
