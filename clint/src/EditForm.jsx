@@ -1,3 +1,7 @@
+
+
+import React, { useState, useEffect } from 'react';
+
 import axios from 'axios';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -14,6 +18,14 @@ const EditForm = () => {
     const token = Cookies.get('token');
     console.log(token);
 
+
+
+  useEffect(() => {
+    const user = location.state?.user;
+    if (user) {
+      setEditedUser(user);
+    }
+  }, [location.state]);
 
     const updateuser = (event) => {
         const name = event.target.name;
