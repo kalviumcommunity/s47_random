@@ -1,86 +1,83 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import './Login.css'; 
 import axios from 'axios';
-import './Login.css'; // Import the CSS file
+import { useNavigate } from 'react-router-dom';
 
-function Login() {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-  });
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const Login = () => {
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [loginbool,setloginbool] = useState(true)
+    const [logoutbool,setlogoutbool] = useState(false)
+    const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:2000/login', formData);
-      console.log(response.data);
-      setIsLoggedIn(true);
-    } catch (error) {
-      console.error('Error logging in:', error);
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(`Username: ${username}, Email: ${email}`);
+        axios.post('http://localhost:2000/login', { name:username, email }, { withCredentials: true })
+            .then(response => {
+                console.log(response.data.message);
+                setloginbool(false)
+                setlogoutbool(true)
+                setUsername('');
+                setEmail('');
+
+            })
+            .catch(error => {
+                const errormessage = error?.response?.data?.errors?.map((error) => error?.message).join('\n ');
+                if (errormessage) {
+                    return alert(errormessage);
+                }
+                alert(error?.response?.data?.message);
+                console?.error(error?.response?.data);
+            });
+    };
+
+    const handlelogout = (event) =>{
+        event.preventDefault();
+        axios.get('http://localhost:2000/logout')
+        .then(response => {
+            console.log(response.data.message);
+            setloginbool(true)
+            setlogoutbool(false)
+        })
+        .catch(error => {
+            console.error(error.response.data);
+        });
     }
-  };
 
-  const handleLogout = async () => {
-    try {
-      const response = await axios.get('http://localhost:2000/logout');
-      console.log(response.data);
-      setIsLoggedIn(false);
-      setFormData({
-        username: '',
-        email: '',
-      });
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
-  };
+    return (
+        <>
+        {loginbool && 
+                <div className="login-container">
+                <h1>Login Page</h1>
+                <form onSubmit={handleSubmit} className="login-form">
+                    <label htmlFor="username" className="form-label">Username:</label>
+                    <input
+                        type="text"
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="form-input"
+                    />
+    
+                    <label htmlFor="email" className="form-label">Email:</label>
+                    <input
+                        type="email"
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="form-input"
+                    />
+    
+                    {loginbool && <><button type="submit" className="form-submit-btn">Login</button> <br /></>}
+                </form>
+            </div>
+        }
+        {logoutbool &&  <button onClick={handlelogout} className="form-submit-btn">Logout</button>}
 
-  return (
-    <div className="login-container">
-      {isLoggedIn ? (
-        <div>
-          <h1 className="welcome-message">Welcome, {formData.username}!</h1>
-          <button className="logout-button" onClick={handleLogout}>Logout</button>
-        </div>
-      ) : (
-        <div className="login-form">
-          <h1 className="login-title">Login</h1>
-          <form onSubmit={handleSubmit}>
-            <div className="login-input">
-              <label className="login-label" htmlFor="username">Username:</label>
-              <input
-                className="login-input-field"
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                id="username"
-              />
-            </div>
-            <div className="login-input">
-              <label className="login-label" htmlFor="email">Email:</label>
-              <input
-                className="login-input-field"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                id="email"
-              />
-            </div>
-            <button className="login-button" type="submit">Login</button>
-          </form>
-        </div>
-      )}
-    </div>
-  );
-}
+        </>
+    );
+};
 
 export default Login;
