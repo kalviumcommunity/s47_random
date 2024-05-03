@@ -3,18 +3,14 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './EditForm.css'; // Import CSS file for styling
 import Cookies from 'js-cookie';
-
 const EditForm = () => {
     const location = useLocation();
     const user = location?.state?.user;
     const navigate = useNavigate();
-
     const [userName, setUserName] = useState(user?.name);
     const [userEmail, setUserEmail] = useState(user?.email);
     const token = Cookies.get('token');
     console.log(token);
-
-
     const updateuser = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -25,7 +21,6 @@ const EditForm = () => {
         }
         console.log(userName, userEmail);
     };
-
     function handleFormSubmit(event) {
         event.preventDefault();
         axios.put(`http://localhost:2000/users/${user._id}`, { name: userName, email: userEmail }, {
@@ -41,7 +36,6 @@ const EditForm = () => {
                 alert(err.response?.data.message)
             });
     }
-
     return (
         <div className="update-form-container">
             <form className="update-form" onChange={updateuser} onSubmit={handleFormSubmit}>
@@ -55,5 +49,4 @@ const EditForm = () => {
         </div>
     )
 }
-
 export default EditForm;
